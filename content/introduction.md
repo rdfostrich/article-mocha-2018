@@ -19,7 +19,7 @@ is a yearly challenge that aims to measure and detect bottlenecks in RDF triple 
 One of the tasks in this challenge concerns the storage and querying of versioned datasets.
 This task uses the [SPBv](cite:cites spbv) benchmark that consists of a dataset and a SPARQL query workload generator for different versioned query types.
 All MOCHA tasks are to be evaluated on the [HOBBIT benchmarking platform](https://project-hobbit.eu/){:.mandatory}.
-As SPBv evaluates using SPARQL queries, and OSTRICH is a versioned triple index with triple pattern query support,
+As SPBv evaluates using [SPARQL queries](cite:cites spec:sparqllang), and OSTRICH is a versioned triple index with triple pattern query support,
 we use the highly modular Comunica SPARQL engine to perform versioned SPARQL queries over an OSTRICH store.
 
 This article is structured as follows.
