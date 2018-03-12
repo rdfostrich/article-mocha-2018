@@ -3,10 +3,10 @@
 
 In this section, we introduce preliminary results of running the SPBv benchmark on Comunica and OSTRICH.
 
-As the MOCHA challenge consists of running a system within the Docker-based HOBBIT platform,
+As the MOCHA challenge requires running a system within the Docker-based HOBBIT platform,
 we provide [a system adapter with a Docker container](https://github.com/rdfostrich/challenge-mocha-2018){:.mandatory}
 for our engine that is based on Comunica and OSTRICH.
-Using this system adapter, we ran the SPBv benchmark on our system on the HOBBIT platform with the parameters from [](#benchmark-params).
+Using this adapter, we ran the SPBv benchmark on our system on the HOBBIT platform with the parameters from [](#benchmark-params).
 
 <figure id="benchmark-params" class="table" markdown="1">
 
@@ -25,20 +25,20 @@ Configuration of the SPBv benchmark for our experiment.
 </figure>
 
 For the used configuration, our system is able to ingest 56,454 triples per second for the initial version,
-and 8,753 per second for the later changesets.
-The initial version ingestion is significantly faster in OSTRICH because it stores the initial version directly as a HDT file.
+and 8,753 per second for the following changesets.
+The initial version ingestion is significantly faster because the initial version is stored directly as a HDT snapshot.
 For each following changeset, OSTRICH requires more processing time as it calculates and stores additional metadata
 and converts the changeset to one that is relative to the initial version instead of the preceding version.
 
 For the 90 queries that were evaluated, our system failed for 69 of them according to the benchmark.
 The majority of failures is caused by incomplete SPARQL expression support in Comunica, which is not fully compatible with SPARQL 1.1 at the time of writing.
-The other failures are due to incorrect results being returned, which could be caused by a bug in either Comunica or OSTRICH.
+The other failures are due to incorrect results being returned, which is caused by a bug in Comunica or OSTRICH.
 
-For the remaining successful queries, our system achieved fast query evaluation times for all query types, as shown in [](#benchmark-results).
+For the remaining successful queries, our system achieves fast query evaluation times for all query types, as shown in [](#benchmark-results).
 In summary, the queries of type 2 (queries starting with a 2-prefix) query within the latest version,
-query type 3 retrieves a full past version,
-query type 4 queries within a past version,
-and query type 8 queries over two different versions.
+type 3 retrieves a full past version,
+type 4 queries within a past version,
+and type 8 queries over two different versions.
 Additional details on the query types can be found in the [SPBv](cite:cites spbv) article.
 
 <figure id="benchmark-results" class="table" markdown="1">

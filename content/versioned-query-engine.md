@@ -24,8 +24,9 @@ It's modularity enables federated querying over heterogeneous interfaces, such a
 [Triple Pattern Fragments (TPF) entrypoints](cite:cites ldf) and local or remote raw data dumps.
 New types of interfaces and datasources can be supported by implementing an additional software component
 and plugging it into a publish-subscribe-based system through an external configuration file.
+Its easy extendability is the reason why we use it in combination with OSTRICH.
 
 In order to support versioned SPARQL querying over an OSTRICH backend,
 we [implemented](https://github.com/comunica/comunica/tree/feature/ostrich){:.mandatory} a component for resolving triple patterns against an OSTRICH dataset.
-Furthermore, as the versioned queries within the SPBv benchmark represent versions as *named graphs*,
+Furthermore, as versions within the SPBv benchmark are represented as *named graphs*,
 we rewrite these queries in a separate component to OSTRICH-compatible queries *in*, *between*, or *over* different versions as a pre-processing step.
