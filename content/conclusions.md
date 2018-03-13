@@ -1,6 +1,9 @@
 ## Conclusions
 {:#conclusions}
 
+{:.comment data-author="MVS"}
+I like the conclusion a lot!
+
 This article represents a submission for the versioning task in the Mighty Storage Challenge 2018 as part of the ESWC 2018 Challenges Track.
 Our work consists of a versioned query engine with the OSTRICH versioned triple store and the Comunica SPARQL engine platform.
 Preliminary results show fast query evaluation times for the queries that are supported.
