@@ -1,5 +1,8 @@
 ## Abstract
 <!-- Context      -->
+{:.comment data-author="MVS"}
+Is that first sentence needed? You are submitting to this challenge, no?
+
 In order to detect bottlenecks with existing triple stores that form the backbone of many Linked Data-based applications,
 the Mighty Storage Challenge is being organized.
 <!-- Need         -->

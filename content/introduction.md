@@ -11,7 +11,12 @@ Furthermore, no existing solution performs well for all versioned query types, n
 
 In recent work, we introduced a [compressed RDF archive indexing technique](cite:cites ostrich)—implemented under the name of _OSTRICH_—
 that enables highly efficient triple pattern-based versioned querying capabilities.
-It offers a new trade-off compared to other approaches, as it calculates and stores additional metadata at ingestion time in order to reduce query evaluation time.
+It offers a new trade-off compared to other approaches,
+
+{:.comment data-author="MVS"}
+like what metadata? Is that accurately phrased?
+
+as it calculates and stores additional metadata at ingestion time in order to reduce query evaluation time.
 Furthermore, it supports efficient cardinality estimation, streaming results and offset support to enable efficient usage withing query engines.
 
 The [Mighty Storage Challenge (MOCHA) 2018](https://project-hobbit.eu/challenges/mighty-storage-challenge2018/){:.mandatory}
@@ -19,10 +24,10 @@ is a yearly challenge that aims to measure and detect bottlenecks in RDF triple 
 One of the tasks in this challenge concerns the storage and querying of versioned datasets.
 This task uses the [SPBv](cite:cites spbv) benchmark that consists of a dataset and SPARQL query workload generator for different versioned query types.
 All MOCHA tasks are to be evaluated on the [HOBBIT benchmarking platform](https://project-hobbit.eu/){:.mandatory}.
-As SPBv evaluates using [SPARQL queries](cite:cites spec:sparqllang), and OSTRICH is a versioned triple index with triple pattern query support,
-we use the Comunica SPARQL engine to perform versioned SPARQL queries over an OSTRICH store.
+SPBv evaluates [SPARQL queries](cite:cites spec:sparqllang), hence we combine OSTRICH, a versioned triple index with triple pattern interface, with
+the JavaScript SPARQL engine Comunica.
 
-This article is structured as follows.
-In the next section, we give a brief overview of the OSTRICH store and the Comunica SPARQL engine.
+The remainder of this paper is structured as follows.
+First, the next section briefly introduces the OSTRICH store and the Comunica SPARQL engine.
 After that, we present our preliminary results in [](#evaluation).
 Finally, we conclude and discuss future work in [](#conclusions).
