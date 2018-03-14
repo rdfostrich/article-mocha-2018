@@ -1,14 +1,12 @@
 ## Abstract
 <!-- Context      -->
-{:.comment data-author="MVS"}
-Is that first sentence needed? You are submitting to this challenge, no?
-
-In order to detect bottlenecks with existing triple stores that form the backbone of many Linked Data-based applications,
-the Mighty Storage Challenge is being organized.
+In order to exploit the value of historical information in Linked Datasets,
+we need to be able to store and query different versions of such datasets efficiently.
+The Mighty Storage Challenge is being organized to discover the efficiency of such Linked Data stores and to detect their bottlenecks.
 <!-- Need         -->
-One task in this challenge concerns the storage and querying of versioned datasets.
+One task in this challenge focusses on the storage and querying of versioned datasets,
 <!-- Task         -->
-We aim to participate by combining the OSTRICH triple store and the Comunica SPARQL engine.
+in which we aim to participate by combining the OSTRICH triple store and the Comunica SPARQL engine.
 <!-- Object       -->
 In this article, we briefly introduce our system as an entry for the versioning task of this challenge.
 <!-- Findings     -->

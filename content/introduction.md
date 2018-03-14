@@ -12,11 +12,8 @@ Furthermore, no existing solution performs well for all versioned query types, n
 In recent work, we introduced a [compressed RDF archive indexing technique](cite:cites ostrich)—implemented under the name of _OSTRICH_—
 that enables highly efficient triple pattern-based versioned querying capabilities.
 It offers a new trade-off compared to other approaches,
-
-{:.comment data-author="MVS"}
-like what metadata? Is that accurately phrased?
-
-as it calculates and stores additional metadata at ingestion time in order to reduce query evaluation time.
+as it calculates and stores additional information at ingestion time in order to reduce query evaluation time.
+This additional information includes pointers to relevant positions to improve the efficiency of result offsets.
 Furthermore, it supports efficient cardinality estimation, streaming results and offset support to enable efficient usage withing query engines.
 
 The [Mighty Storage Challenge (MOCHA) 2018](https://project-hobbit.eu/challenges/mighty-storage-challenge2018/){:.mandatory}
