@@ -33,7 +33,7 @@ and converts the changeset to one that is relative to the initial version instea
 For the 90 queries that were evaluated, our system failed for 69 of them according to the benchmark.
 The majority of failures is caused by incomplete SPARQL expression support in Comunica, which is not fully compatible with SPARQL 1.1 at the time of writing.
 The other failures are due to incorrect results being returned, which is caused by a bug in Comunica or OSTRICH.
-We aim to improve these results for the main challenge.
+We aim to improve these results by the time that the final MOCHA test dataset for task 3 is released.
 
 For the remaining successful queries, our system achieves fast query evaluation times for all query types, as shown in [](#benchmark-results).
 In summary, the queries of type 2 (queries starting with a 2-prefix) query within the latest version,
