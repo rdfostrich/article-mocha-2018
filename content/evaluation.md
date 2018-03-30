@@ -14,7 +14,7 @@ Using this adapter, we ran the SPBv benchmark on our system on the HOBBIT platfo
 |-----------------------------|------------|
 | **Seed**                    | 100        |
 | **Data form**               | Changesets |
-| **Initial version triples** | 50,000     |
+| **Triples in version 1   ** | 50,000     |
 | **Versions**                | 4          |
 | **Version deletion ratio**  | 3%         |
 | **Version addition ratio**  | 5%         |
@@ -31,7 +31,7 @@ For each following changeset, OSTRICH requires more processing time as it calcul
 and converts the changeset to one that is relative to the initial version instead of the preceding version.
 
 For the 90 queries that were evaluated, our system failed for 69 of them according to the benchmark.
-The majority of failures is caused by incomplete SPARQL expression support in Comunica, which is not fully compatible with SPARQL 1.1 at the time of writing.
+The majority of failures is caused by incomplete SPARQL expression support in Comunica, which is not on par with SPARQL 1.1 at the time of writing.
 The other failures are due to incorrect results being returned, which is caused by a bug in Comunica or OSTRICH.
 We aim to improve these results by the time that the final MOCHA test dataset for task 3 is released.
 
@@ -47,19 +47,19 @@ Additional details on the query types can be found in the [SPBv](cite:cites spbv
 <center>
 <div markdown="1" style="width:12em;display:inline-block">
 
-| Query | Time   | Results |
-|-------|-------:|--------:|
-| 2.1   |    68  | 96      |
-| 2.2   |    36  |  7      |
-| 2.2   |    43  |  7      |
-| 2.2   |    96  | 72      |
-| 2.3   |    22  |  1      |
-| 2.3   |    19  |  1      |
-| 2.3   |    40  |  2      |
-| 2.6   |   230  | 46      |
-| 3.1   | 11431  | 98513   |
-| 4.1   |   348  | 25      |
-| 4.1   |    39  | 66      |
+| Query | Time    | Results  |
+|-------|--------:|---------:|
+| 2.1   |     68  |  96      |
+| 2.2   |     36  |   7      |
+| 2.2   |     43  |   7      |
+| 2.2   |     96  |  72      |
+| 2.3   |     22  |   1      |
+| 2.3   |     19  |   1      |
+| 2.3   |     40  |   2      |
+| 2.6   |    230  |  46      |
+| 3.1   | 1,1431  |  98,513  |
+| 4.1   |    348  |  25      |
+| 4.1   |     39  |  66      |
 
 </div>
 

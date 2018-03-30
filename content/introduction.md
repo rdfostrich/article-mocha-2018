@@ -16,7 +16,7 @@ as it calculates and stores additional information at ingestion time in order to
 This additional information includes pointers to relevant positions to improve the efficiency of result offsets.
 Furthermore, it supports efficient cardinality estimation, streaming results and offset support to enable efficient usage withing query engines.
 
-The [Mighty Storage Challenge (MOCHA) 2018](https://project-hobbit.eu/challenges/mighty-storage-challenge2018/){:.mandatory}
+The [Mighty Storage Challenge (MOCHA)](https://project-hobbit.eu/challenges/mighty-storage-challenge2018/){:.mandatory}
 is a yearly challenge that aims to measure and detect bottlenecks in RDF triple stores.
 One of the tasks in this challenge concerns the storage and querying of versioned datasets.
 This task uses the [SPBv](cite:cites spbv) benchmark that consists of a dataset and SPARQL query workload generator for different versioned query types.
