@@ -3,9 +3,10 @@
 
 The [Semantic Web](cite:cites semanticweb) of [Linked Data](cite:cites linkeddata) is continuously [growing and changing over time](cite:cites datasetdynamics).
 While in some cases only the latest version of datasets are required, there is a growing need for access to prior dataset versions for data analysis.
+For example, analyzing the evolution of taxonomies, or tracking the evolution of diseases in biomedical datasets.
 
 Several approaches have already been proposed to store and query _versioned_ Linked Datasets.
-However, [a survey](cite:cites archiving) has shown that there is a need for improved versioning capabilities in the current systems.
+However, [surveys](cite:cites archiving,papakonstantinou2016versioning) have shown that there is a need for improved versioning capabilities in the current systems.
 Existing solutions either perform well for versioned query evaluation, or require less storage space, but not both.
 Furthermore, no existing solution performs well for all versioned query types, namely querying *at*, *between*, and *for* different versions.
 
@@ -14,7 +15,7 @@ that enables highly efficient triple pattern-based versioned querying capabiliti
 It offers a new trade-off compared to other approaches,
 as it calculates and stores additional information at ingestion time in order to reduce query evaluation time.
 This additional information includes pointers to relevant positions to improve the efficiency of result offsets.
-Furthermore, it supports efficient cardinality estimation, streaming results and offset support to enable efficient usage withing query engines.
+Furthermore, it supports efficient result cardinality estimation, streaming results and offset support to enable efficient usage within query engines.
 
 The [Mighty Storage Challenge (MOCHA)](https://project-hobbit.eu/challenges/mighty-storage-challenge2018/){:.mandatory}
 is a yearly challenge that aims to measure and detect bottlenecks in RDF triple stores.
