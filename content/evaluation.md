@@ -31,15 +31,17 @@ The initial version ingestion is significantly faster because the initial versio
 For each following changeset, OSTRICH requires more processing time as it calculates and stores additional metadata
 and converts the changeset to one that is relative to the initial version instead of the preceding version.
 
-For the 99 queries that were evaluated, our system failed for 29 of them according to the benchmark.
+For the 99 queries that were evaluated, our system failed for 27 of them according to the benchmark.
 The majority of failures is caused by incomplete SPARQL expression support in Comunica, which is not on par with SPARQL 1.1 at the time of writing.
-The other failures (in task 5.1) are assumed to be caused by an error in the benchmark.
+The other failures (in task 5.1) are caused by an error in the benchmark where changes in literal datatypes are not being detected.
+We are in contact with the benchmark developer to resolve this.
 
 For the successful queries, our system achieves fast query evaluation times for all query types, as shown in [](#benchmark-results).
 In summary, the query of type 1 (queries starting with a 1-prefix) completely materializes the latest version,
 type 2 queries within the latest version,
 type 3 retrieves a full past version,
 type 4 queries within a past version,
+type 5 queries the differences between two versions,
 and type 8 queries over two different versions.
 Additional details on the query types can be found in the [SPBv](cite:cites spbv) article.
 
@@ -70,13 +72,13 @@ Additional details on the query types can be found in the [SPBv](cite:cites spbv
 |-------|--------:|--------:|
 | 4.5   |    197  |    708  |
 | 4.6   |  1,119  |     25  |
+| 5.1   | 13,871  | 59,229  |
 | 8.1   |     59  |    171  |
 | 8.2   |     56  |     52  |
 | 8.3   |     31  |     22  |
 | 8.4   |     44  |      0  |
 | 8.5   |    709  |  2,288  |
 | 8.6   |  8,258  |    346  |
-|       |         |         |
 |       |         |         |
 |       |         |         |
 

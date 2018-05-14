@@ -4,7 +4,7 @@
 This article represents a submission for the versioning task in the Mighty Storage Challenge 2018 as part of the ESWC 2018 Challenges Track.
 Our work consists of a versioned query engine with the OSTRICH versioned triple store and the Comunica SPARQL engine platform.
 Preliminary results show fast query evaluation times for the queries that are supported.
-The list of unsupported queries will be used as a guideline for the further development of OSTRICH and Comunica within this challenge.
+The list of unsupported queries is being used as a guideline for the further development of OSTRICH and Comunica.
 
 During the usage of the SPBv benchmark,
 we identified several KPIs that are explicitly supported by OSTRICH,
