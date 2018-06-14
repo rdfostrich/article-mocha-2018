@@ -19,7 +19,7 @@ OSTRICH offers efficient cardinality estimation, streaming results and efficient
 
 ### Comunica
 
-[Comunica](https://github.com/comunica/comunica/){:.mandatory} is a highly modular Web-based SPARQL query engine platform.
+[Comunica](cite:cites comunica) is a highly modular Web-based SPARQL query engine platform.
 Its modularity enables federated querying over heterogeneous interfaces, such as [SPARQL endpoints](cite:cites spec:sparqlprot),
 [Triple Pattern Fragments (TPF) entrypoints](cite:cites ldf) and plain RDF files.
 New types of interfaces and datasources can be supported by implementing an additional software component
