@@ -18,3 +18,5 @@ We list them here as a suggestion to the benchmark authors for future work:
 
 In future work, we intend to evaluate our system using different configurations of the SPBv benchmark,
 such as increasing the number of versions and increasing the change ratios.
+Furthermore, we intend to compare our system with other similar engines,
+both at triple index-level, and at SPARQL-level.
