@@ -1,7 +1,7 @@
 ## Evaluation
 {:#evaluation}
 
-In this section, we introduce preliminary results of running the SPBv benchmark on Comunica and OSTRICH.
+In this section, we introduce the results of running the SPBv benchmark on Comunica and OSTRICH.
 
 As the MOCHA challenge requires running a system within the Docker-based HOBBIT platform,
 we provide [a system adapter with a Docker container](https://github.com/rdfostrich/challenge-mocha-2018){:.mandatory}

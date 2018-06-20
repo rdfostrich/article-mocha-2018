@@ -1,7 +1,7 @@
 ## Versioned Query Engine
 {:#versioned-query-engine}
 
-In this section we introduce the versioned query engine that consists of the OSTRICH store and the Comunica SPARQL engine.
+In this section we introduce the versioned query engine that consists of the OSTRICH store and the Comunica framework.
 We discuss these two parts separately in the following sections.
 
 ### OSTRICH
@@ -23,9 +23,11 @@ OSTRICH offers efficient cardinality estimation, streaming results and efficient
 Its modularity enables federated querying over heterogeneous interfaces, such as [SPARQL endpoints](cite:cites spec:sparqlprot),
 [Triple Pattern Fragments (TPF) entrypoints](cite:cites ldf) and plain RDF files.
 New types of interfaces and datasources can be supported by implementing an additional software component
-and plugging it into a publish-subscribe-based system through an external configuration file.
+and plugging it into a publish-subscribe-based system through an external semantic configuration file.
 
-In order to support versioned SPARQL querying over an OSTRICH backend,
-we [implemented](https://github.com/comunica/comunica/tree/feature/ostrich){:.mandatory} a component for resolving triple patterns against an OSTRICH dataset.
+In order to support _versioned_ SPARQL querying over an OSTRICH backend,
+we [implemented](https://github.com/rdfostrich/comunica-actor-rdf-resolve-quad-pattern-ostrich){:.mandatory}
+a component for resolving triple patterns with a versioning context against an OSTRICH dataset.
 Furthermore, as versions within the SPBv benchmark are represented as *named graphs*,
-we rewrite these queries in a separate component to OSTRICH-compatible queries *in*, *between*, or *over* different versions as a pre-processing step.
+we rewrite these queries in a [separate component](https://github.com/rdfostrich/comunica-actor-query-operation-contextify-version){:.mandatory}
+to OSTRICH-compatible queries *in*, *between*, or *over* different versions as a pre-processing step.

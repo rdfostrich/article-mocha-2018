@@ -6,11 +6,11 @@ The 2018 edition of the Mighty Storage Challenge (MOCHA) is organized to discove
 <!-- Need         -->
 One task in this challenge focuses on the storage and querying of versioned datasets,
 <!-- Task         -->
-in which we aim to participate by combining the OSTRICH triple store and the Comunica SPARQL engine.
+in which we participated by combining the OSTRICH triple store and the Comunica SPARQL engine.
 <!-- Object       -->
-In this article, we briefly introduce our system as an entry for the versioning task of this challenge.
+In this article, we briefly introduce our system for the versioning task of this challenge.
 <!-- Findings     -->
-We present preliminary results that show that our system achieves fast query times for the supported queries,
+We present the evaluation results that show that our system achieves fast query times for the supported queries,
 but not all queries are supported by Comunica at the time of writing.
 <!-- Conclusion   -->
 These results of this challenge will serve as a guideline for further improvements to our system.

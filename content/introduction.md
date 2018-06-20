@@ -23,7 +23,7 @@ One of the tasks in this challenge concerns the storage and querying of versione
 This task uses the [SPBv](cite:cites spbv) benchmark that consists of a dataset and SPARQL query workload generator for different versioned query types.
 All MOCHA tasks are to be evaluated on the [HOBBIT benchmarking platform](https://project-hobbit.eu/){:.mandatory}.
 SPBv evaluates [SPARQL queries](cite:cites spec:sparqllang), hence we combine OSTRICH, a versioned triple index with triple pattern interface, with
-the JavaScript SPARQL engine Comunica.
+[Comunica](cite:cites comunica), a modular SPARQL engine platform.
 
 The remainder of this paper is structured as follows.
 First, the next section briefly introduces the OSTRICH store and the Comunica SPARQL engine.
