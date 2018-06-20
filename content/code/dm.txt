@@ -1,0 +1,6 @@
+SELECT * WHERE {
+  GRAPH <http://graph.version.4> { ?s ?p ?o } .
+  FILTER (NOT EXISTS {
+    GRAPH <http://graph.version.1> { ?s ?p ?o }
+  })
+}
