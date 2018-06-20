@@ -1,3 +1,9 @@
+<span class="print-only">
+<br />
+<br />
+<br />
+</span>
+
 ## Conclusions
 {:#conclusions}
 
