@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title><%= h @item[:title] %></title>
+  <title><%= h @item[:title].gsub(/<\/?[^>]*>/, " ") %></title>
   <link rel="stylesheet" media="screen" href="styles/screen.css">
   <link rel="stylesheet" media="print"  href="styles/print.css">
 </head>
