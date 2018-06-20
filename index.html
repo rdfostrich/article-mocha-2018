@@ -1,0 +1,506 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Versioned Querying with OSTRICH and Comunica&lt;br /&gt;in MOCHA 2018</title>
+  <link rel="stylesheet" media="screen" href="styles/screen.css">
+  <link rel="stylesheet" media="print"  href="styles/print.css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono" rel="stylesheet" />
+  <link href="https://dokie.li/media/css/do.css" media="all" rel="stylesheet" />
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet" />
+  <script src="https://dokie.li/scripts/simplerdf.js"></script>
+  <script src="https://dokie.li/scripts/medium-editor.min.js"></script>
+  <script src="https://dokie.li/scripts/medium-editor-tables.min.js"></script>
+  <script src="https://dokie.li/scripts/do.js"></script>
+</head>
+
+<body prefix="cc: https://creativecommons.org/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# opmw: http://www.opmw.org/ontology/">
+  <header>
+  <h1 id="versioned-querying-with-ostrich-and-comunicabr-in-mocha-2018">Versioned Querying with OSTRICH and Comunica<br />in MOCHA 2018</h1>
+
+  <ul id="authors">
+    <li><a href="http://www.rubensworks.net/" typeof="http://xmlns.com/foaf/0.1/Person" resource="http://www.rubensworks.net/#me">Ruben Taelman</a></li>
+    <li><a href="#" typeof="http://xmlns.com/foaf/0.1/Person" resource="https://data.verborgh.org/people/miel_vander_sande">Miel Vander Sande</a></li>
+    <li><a href="https://ruben.verborgh.org/" typeof="http://xmlns.com/foaf/0.1/Person" resource="https://ruben.verborgh.org/profile/#me">Ruben Verborgh</a></li>
+  </ul>
+
+  <ul id="affiliations">
+    <li id="idlab">IDLab,
+          Department of Electronics and Information Systems,
+          Ghent University – imec</li>
+  </ul>
+
+  <section id="abstract">
+    <h2>Abstract</h2>
+    <!-- Context      -->
+    <p>In order to exploit the value of historical information in Linked Datasets,
+we need to be able to store and query different versions of such datasets efficiently.
+The 2018 edition of the Mighty Storage Challenge (MOCHA) is organized to discover the efficiency of such Linked Data stores and to detect their bottlenecks.
+<!-- Need         -->
+One task in this challenge focuses on the storage and querying of versioned datasets,
+<!-- Task         -->
+in which we participated by combining the OSTRICH triple store and the Comunica <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engine.
+<!-- Object       -->
+In this article, we briefly introduce our system for the versioning task of this challenge.
+<!-- Findings     -->
+We present the evaluation results that show that our system achieves fast query times for the supported queries,
+but not all queries are supported by Comunica at the time of writing.
+<!-- Conclusion   -->
+These results of this challenge will serve as a guideline for further improvements to our system.
+<!-- Perspectives --></p>
+
+  </section>
+
+  <section class="actions">
+    <h2 id="notifications-and-annotations">Notifications and annotations</h2>
+    <ul>
+      <li><a href="https://pod.linkedsoftwaredependencies.org/inbox/rdfostrich.github.io/article-mocha-2018/" rel="ldp:inbox">notification inbox</a></li>
+      <li><a href="https://pod.linkedsoftwaredependencies.org/annotation/rdfostrich.github.io/article-mocha-2018/" rel="oa:annotationService">annotation service</a></li>
+    </ul>
+  </section>
+</header>
+
+
+<main>
+  <section id="introduction">
+    <h2>Introduction</h2>
+
+    <p>The Semantic Web <span class="references">[<a href="#ref-1">1</a>]</span> of Linked Data <span class="references">[<a href="#ref-2">2</a>]</span> is continuously growing and changing over time <span class="references">[<a href="#ref-3">3</a>]</span>.
+While in some cases only the latest version of datasets are required, there is a growing need for access to prior dataset versions for data analysis.
+For example, analyzing the evolution of taxonomies, or tracking the evolution of diseases in biomedical datasets.</p>
+
+    <p>Several approaches have already been proposed to store and query <em>versioned</em> Linked Datasets.
+However, <a property="schema:citation http://purl.org/spar/cito/cites" href="http://ceur-ws.org/Vol-1377/paper6.pdf">surveys</a> <span class="references">[<a href="#ref-4">4</a>, <a href="#ref-5">5</a>]</span> have shown that there is a need for improved versioning capabilities in the current systems.
+Existing solutions either perform well for versioned query evaluation, or require less storage space, but not both.
+Furthermore, no existing solution performs well for all versioned query types, namely querying <em>at</em>, <em>between</em>, and <em>for</em> different versions.</p>
+
+    <p>In recent work, we introduced a <a property="schema:citation http://purl.org/spar/cito/cites" href="https://rdfostrich.github.io/article-demo/">compressed <span class='abbreviation' title='Resource Description Framework'>RDF</span> archive indexing technique</a> <span class="references">[<a href="#ref-6">6</a>]</span>—implemented under the name of <em>OSTRICH</em>—
+that enables highly efficient triple pattern-based versioned querying capabilities.
+It offers a new trade-off compared to other approaches,
+as it calculates and stores additional information at ingestion time in order to reduce query evaluation time.
+This additional information includes pointers to relevant positions to improve the efficiency of result offsets.
+Furthermore, it supports efficient result cardinality estimation, streaming results and offset support to enable efficient usage within query engines.</p>
+
+    <p>The <a href="https://project-hobbit.eu/challenges/mighty-storage-challenge2018/" class="mandatory" data-link-text="https:/​/​project-​hobbit.eu/​challenges/​mighty-​storage-​challenge2018/​">Mighty Storage Challenge (MOCHA)</a>
+is a yearly challenge that aims to measure and detect bottlenecks in <span class='abbreviation' title='Resource Description Framework'>RDF</span> triple stores.
+One of the tasks in this challenge concerns the storage and querying of versioned datasets.
+This task uses the <a property="schema:citation http://purl.org/spar/cito/cites" href="http://ceur-ws.org/Vol-1932/#paper-06">SPBv</a> <span class="references">[<a href="#ref-7">7</a>]</span> benchmark that consists of a dataset and <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> query workload generator for different versioned query types.
+All MOCHA tasks are to be evaluated on the <a href="https://project-hobbit.eu/" class="mandatory" data-link-text="https:/​/​project-​hobbit.eu/​">HOBBIT benchmarking platform</a>.
+SPBv evaluates <a property="schema:citation http://purl.org/spar/cito/cites" href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/"><span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> queries</a> <span class="references">[<a href="#ref-8">8</a>]</span>, hence we combine OSTRICH, a versioned triple index with triple pattern interface, with
+<a property="schema:citation http://purl.org/spar/cito/cites" href="https://comunica.github.io/Article-ISWC2018-Resource/">Comunica</a> <span class="references">[<a href="#ref-9">9</a>]</span>, a modular <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engine platform.</p>
+
+    <p>The remainder of this paper is structured as follows.
+First, the next section briefly introduces the OSTRICH store and the Comunica <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engine.
+After that, we present our preliminary results in <a href="#evaluation">Section 3</a>.
+Finally, we conclude and discuss future work in <a href="#conclusions">Section 4</a>.</p>
+
+  </section>
+
+  <section id="versioned-query-engine">
+    <h2>Versioned Query Engine</h2>
+
+    <p>In this section we introduce the versioned query engine that consists of the OSTRICH store and the Comunica framework.
+We discuss these two parts separately in the following sections.</p>
+
+    <h3 id="ostrich">OSTRICH</h3>
+
+    <p>OSTRICH is the implementation of a <a property="schema:citation http://purl.org/spar/cito/cites" href="https://rdfostrich.github.io/article-demo/">compressed <span class='abbreviation' title='Resource Description Framework'>RDF</span> archive indexing technique</a> <span class="references">[<a href="#ref-6">6</a>]</span> that offers efficient
+triple pattern queries <em>in</em>, <em>between</em>, and <em>over</em> different versions.
+In order to achieve efficient querying for these different query types,
+OSTRICH uses a hybrid storage technique that is a combination of <em>individual copies</em>, <em>change-based</em> and <em>timestamp-based</em> storage.
+The initial dataset version is stored as a fully materialized and immutable snapshot.
+This snapshot is stored using <a property="schema:citation http://purl.org/spar/cito/cites" href="http://www.websemanticsjournal.org/index.php/ps/article/view/328">HDT</a> <span class="references">[<a href="#ref-10">10</a>]</span>, which is a highly compressed, binary <span class='abbreviation' title='Resource Description Framework'>RDF</span> representation.
+All other versions are deltas, i.e., lists of triples that need to be removed and lists of triples that need to be added.
+These deltas are relative to the initial version, but merged in a timestamp-based manner to reduce redundancies between each version.
+In order to offer optimization opportunities to query engines that use this store,
+OSTRICH offers efficient cardinality estimation, streaming results and efficient offset support.</p>
+
+    <h3 id="comunica">Comunica</h3>
+
+    <p><a property="schema:citation http://purl.org/spar/cito/cites" href="https://comunica.github.io/Article-ISWC2018-Resource/">Comunica</a> <span class="references">[<a href="#ref-9">9</a>]</span> is a highly modular Web-based <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> query engine platform.
+Its modularity enables federated querying over heterogeneous interfaces, such as <a property="schema:citation http://purl.org/spar/cito/cites" href="http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/"><span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> endpoints</a> <span class="references">[<a href="#ref-11">11</a>]</span>,
+<span property="schema:citation http://purl.org/spar/cito/cites" resource="https://dx.doi.org/doi:10.1016/j.websem.2016.03.003"><a href="http://linkeddatafragments.org/publications/jws2016.pdf">Triple Pattern Fragments (<span class='abbreviation' title='Triple Pattern Fragments'>TPF</span>) entrypoints</a></span> <span class="references">[<a href="#ref-12">12</a>]</span> and plain <span class='abbreviation' title='Resource Description Framework'>RDF</span> files.
+New types of interfaces and datasources can be supported by implementing an additional software component
+and plugging it into a publish-subscribe-based system through an external semantic configuration file.</p>
+
+    <p>In order to support <em>versioned</em> <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> querying over an OSTRICH backend,
+we <a href="https://github.com/rdfostrich/comunica-actor-rdf-resolve-quad-pattern-ostrich" class="mandatory" data-link-text="https:/​/​github.com/​rdfostrich/​comunica-​actor-​rdf-​resolve-​quad-​pattern-​ostrich">implemented</a>
+a module for resolving triple patterns with a versioning context against an OSTRICH dataset.
+Furthermore, as versions within the SPBv benchmark are represented as <em>named graphs</em>,
+we rewrite these queries in a <a href="https://github.com/rdfostrich/comunica-actor-query-operation-contextify-version" class="mandatory" data-link-text="https:/​/​github.com/​rdfostrich/​comunica-​actor-​query-​operation-​contextify-​version">separate module</a>
+to OSTRICH-compatible queries <em>in</em>, <em>between</em>, or <em>over</em> different versions as a pre-processing step.
+Finally, we provide a <a href="https://github.com/rdfostrich/comunica-actor-init-sparql-ostrich" class="mandatory" data-link-text="https:/​/​github.com/​rdfostrich/​comunica-​actor-​init-​sparql-​ostrich">default Comunica configuration and script</a>
+to use these modules
+together with the existing Comunica modules as a <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engine.
+These three modules will be explained in more detail hereafter.</p>
+
+    <h4 id="ostrich-module">OSTRICH Module</h4>
+
+    <p>OSTRICH enables versioned triple pattern queries <em>at</em>, <em>between</em>, and <em>for</em> different versions.
+These query types are respectively known as <em>Version Materialization (VM)</em>, <em>Delta Materialization (DM)</em> and <em>Version Querying (VQ)</em>.
+In the context the SPBv benchmark, only the first two query types (VM and DM) are evaluated,
+which is why only support for these two are implemented in the OSTRICH module at the time of writing.</p>
+
+    <p>The OSTRICH Comunica module consists of an actor that enables VM and DM triple pattern queries against a given OSTRICH store,
+and is registered to Comunica’s <code>rdf-resolve-quad-pattern</code> bus.
+This actor will receive messages consisting of a triple pattern and a context.
+This actor expects the context to either contain VM or DM information, and a reference to an OSTRICH store.
+For VM queries, a version identifier must be provided in the context.
+For DM queries, a start and end version identifier is expected.</p>
+
+    <p>The <code>rdf-resolve-quad-pattern</code> bus expects two types of output:</p>
+
+    <ol>
+      <li>A stream with matching triples.</li>
+      <li>An estimated count of the number of matching triples.</li>
+    </ol>
+
+    <p>As OSTRICH enables streaming triple pattern query results and corresponding cardinality estimation for all query types,
+these two outputs can be trivially provided using the <a href="https://github.com/rdfostrich/ostrich-node" class="mandatory" data-link-text="https:/​/​github.com/​rdfostrich/​ostrich-​node">JavaScript bindings for OSTRICH</a>.</p>
+
+    <h4 id="versioned-query-rewriter-module">Versioned Query Rewriter Module</h4>
+
+    <p>The SPBv benchmark represents versions as <em>named graphs</em>.
+<a href="#spbv-vm">Listing 1</a> and <a href="#spbv-dm">Listing 2</a> respectively show examples of VM and DM queries in this representation.
+Our second module is responsible for rewriting such named-graph-based queries into context-based queries that the OSTRICH module can accept.</p>
+
+    <figure id="spbv-vm" class="listing">
+<pre><code>SELECT ?s ?p ?o WHERE {
+</code><code>  GRAPH &lt;http://graph.version.4&gt; { ?s ?p ?o }
+</code><code>}
+</code></pre>
+<figcaption>
+        <p><span class="label">Listing 1:</span> Version Materialization query for the <code>?s ?p ?o</code> pattern in version <code>http:/​/​graph.version.4</code> in SPV’s named graph representation.</p>
+      </figcaption>
+</figure>
+
+    <figure id="spbv-dm" class="listing">
+<pre><code>SELECT * WHERE {
+</code><code>  GRAPH &lt;http://graph.version.4&gt; { ?s ?p ?o } .
+</code><code>  FILTER (NOT EXISTS {
+</code><code>    GRAPH &lt;http://graph.version.1&gt; { ?s ?p ?o }
+</code><code>  })
+</code><code>}
+</code></pre>
+<figcaption>
+        <p><span class="label">Listing 2:</span> Delta Materialization query for the <code>?s ?p ?o</code> pattern to get all additions between version
+<code>http:/​/​graph.version.1</code> and <code>http:/​/​graph.version.4</code> in SPV’s named graph representation.</p>
+      </figcaption>
+</figure>
+
+    <p>In order to transform VM named-graph-based queries,
+we detect <code>GRAPH</code> clauses, and consider them to be identifiers for the VM version.
+Our rewriter unwraps the pattern(s) inside this <code>GRAPH</code> clause,
+and attaches a VM version context with the detected version identifier.</p>
+
+    <p>For transforming DM named-graph-based queries,
+<code>GRAPH</code> clauses with corresponding <code>FILTER</code>-<code>NOT EXISTS</code>-<code>GRAPH</code> clauses for the same pattern in the same scope are detected.
+The rewriter unwraps the equal pattern(s),
+and constructs a DM version context with a starting and ending version identifier.
+The starting version is always the <em>smallest</em> of the two graph URIs,
+and the ending version is the <em>largest</em>, assuming lexicographical sorting.
+If the graph URI from the first pattern is <em>larger</em> than the second graph URI, then the DM queries only additions.
+In the other case, only deletions will be queried.</p>
+
+    <h4 id="sparql-engine"><span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> Engine</h4>
+
+    <p>The Comunica platform allows <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engines to be created based on a semantic configuration file.
+By default, Comunica has a large collection of modules to create a default <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engine.
+For this work, we adapted the default configuration file where we added our OSTRICH and rewriter modules.
+This allows complete versioned <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> querying, instead of only versioned triple pattern querying, as supported by OSTRICH.
+This engine is available on the <a href="https://www.npmjs.com/package/@comunica/actor-init-sparql-ostrich" class="mandatory" data-link-text="https:/​/​www.npmjs.com/​package/​@comunica/​actor-​init-​sparql-​ostrich">npm package manager</a> for direct usage.</p>
+
+  </section>
+
+  <section id="evaluation">
+    <h2>Evaluation</h2>
+
+    <p>In this section, we introduce the results of running the SPBv benchmark on Comunica and OSTRICH.</p>
+
+    <p>As the MOCHA challenge requires running a system within the Docker-based HOBBIT platform,
+we provide <a href="https://github.com/rdfostrich/challenge-mocha-2018" class="mandatory" data-link-text="https:/​/​github.com/​rdfostrich/​challenge-​mocha-​2018">a system adapter with a Docker container</a>
+for our engine that is based on Comunica and OSTRICH.
+Using this adapter, we ran the SPBv benchmark on our system on the HOBBIT platform with the parameters from <a href="#benchmark-params">Table 1</a>.</p>
+
+    <figure id="benchmark-params" class="table">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Seed</strong></td>
+            <td>100</td>
+          </tr>
+          <tr>
+            <td><strong>Data form</strong></td>
+            <td>Changesets</td>
+          </tr>
+          <tr>
+            <td><strong>Triples in version 1</strong></td>
+            <td>100,000</td>
+          </tr>
+          <tr>
+            <td><strong>Versions</strong></td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td><strong>Version deletion ratio</strong></td>
+            <td>10%</td>
+          </tr>
+          <tr>
+            <td><strong>Version addition ratio</strong></td>
+            <td>15%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <figcaption>
+        <p><span class="label">Table 1:</span> Configuration of the SPBv benchmark for our experiment.</p>
+      </figcaption>
+    </figure>
+
+    <p>For the used configuration, our system is able to ingest 29,719 triples per second for the initial version,
+and 5,858 per second for the following changesets.
+The complete dataset requires 17MB to be stored using our system.
+The initial version ingestion is significantly faster because the initial version is stored directly as a HDT snapshot.
+For each following changeset, OSTRICH requires more processing time as it calculates and stores additional metadata
+and converts the changeset to one that is relative to the initial version instead of the preceding version.</p>
+
+    <p>For the 99 queries that were evaluated, our system failed for 27 of them according to the benchmark.
+The majority of failures is caused by incomplete <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> expression support in Comunica, which is not on par with <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> 1.1 at the time of writing.
+The other failures (in task 5.1) are caused by an error in the benchmark where changes in literal datatypes are not being detected.
+We are in contact with the benchmark developer to resolve this.</p>
+
+    <p>For the successful queries, our system achieves fast query evaluation times for all query types, as shown in <a href="#benchmark-results">Table 2</a>.
+In summary, the query of type 1 (queries starting with a 1-prefix) completely materializes the latest version,
+type 2 queries within the latest version,
+type 3 retrieves a full past version,
+type 4 queries within a past version,
+type 5 queries the differences between two versions,
+and type 8 queries over two different versions.
+Additional details on the query types can be found in the <a property="schema:citation http://purl.org/spar/cito/cites" href="http://ceur-ws.org/Vol-1932/#paper-06">SPBv</a> <span class="references">[<a href="#ref-7">7</a>]</span> article.</p>
+
+    <figure id="benchmark-results" class="table">
+
+      <center>
+<div style="width:12em;display:inline-block">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Query</th>
+                <th style="text-align: right">Time</th>
+                <th style="text-align: right">Results</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1.1</td>
+                <td style="text-align: right">34,071</td>
+                <td style="text-align: right">141,782</td>
+              </tr>
+              <tr>
+                <td>2.1</td>
+                <td style="text-align: right">49</td>
+                <td style="text-align: right">128</td>
+              </tr>
+              <tr>
+                <td>2.2</td>
+                <td style="text-align: right">59</td>
+                <td style="text-align: right">32</td>
+              </tr>
+              <tr>
+                <td>2.3</td>
+                <td style="text-align: right">27</td>
+                <td style="text-align: right">12</td>
+              </tr>
+              <tr>
+                <td>2.5</td>
+                <td style="text-align: right">233</td>
+                <td style="text-align: right">969</td>
+              </tr>
+              <tr>
+                <td>2.6</td>
+                <td style="text-align: right">1,018</td>
+                <td style="text-align: right">19</td>
+              </tr>
+              <tr>
+                <td>3.1</td>
+                <td style="text-align: right">18,591</td>
+                <td style="text-align: right">100,006</td>
+              </tr>
+              <tr>
+                <td>2.6</td>
+                <td style="text-align: right">230</td>
+                <td style="text-align: right">46</td>
+              </tr>
+              <tr>
+                <td>4.1</td>
+                <td style="text-align: right">37</td>
+                <td style="text-align: right">91</td>
+              </tr>
+              <tr>
+                <td>4.2</td>
+                <td style="text-align: right">43</td>
+                <td style="text-align: right">16</td>
+              </tr>
+              <tr>
+                <td>4.3</td>
+                <td style="text-align: right">21</td>
+                <td style="text-align: right">2</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+<div style="width:12em;display:inline-block;margin-left:5em">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Query</th>
+                <th style="text-align: right">Time</th>
+                <th style="text-align: right">Results</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>4.5</td>
+                <td style="text-align: right">197</td>
+                <td style="text-align: right">708</td>
+              </tr>
+              <tr>
+                <td>4.6</td>
+                <td style="text-align: right">1,119</td>
+                <td style="text-align: right">25</td>
+              </tr>
+              <tr>
+                <td>5.1</td>
+                <td style="text-align: right">13,871</td>
+                <td style="text-align: right">59,229</td>
+              </tr>
+              <tr>
+                <td>8.1</td>
+                <td style="text-align: right">59</td>
+                <td style="text-align: right">171</td>
+              </tr>
+              <tr>
+                <td>8.2</td>
+                <td style="text-align: right">56</td>
+                <td style="text-align: right">52</td>
+              </tr>
+              <tr>
+                <td>8.3</td>
+                <td style="text-align: right">31</td>
+                <td style="text-align: right">22</td>
+              </tr>
+              <tr>
+                <td>8.4</td>
+                <td style="text-align: right">44</td>
+                <td style="text-align: right">0</td>
+              </tr>
+              <tr>
+                <td>8.5</td>
+                <td style="text-align: right">709</td>
+                <td style="text-align: right">2,288</td>
+              </tr>
+              <tr>
+                <td>8.6</td>
+                <td style="text-align: right">8,258</td>
+                <td style="text-align: right">346</td>
+              </tr>
+              <tr>
+                <td> </td>
+                <td style="text-align: right"> </td>
+                <td style="text-align: right"> </td>
+              </tr>
+              <tr>
+                <td> </td>
+                <td style="text-align: right"> </td>
+                <td style="text-align: right"> </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+</center>
+
+      <figcaption>
+        <p><span class="label">Table 2:</span> Evaluation times in milliseconds and the number of results for all SPBv queries that were evaluated successfully.</p>
+      </figcaption>
+    </figure>
+
+  </section>
+
+  <section id="conclusions">
+    <h2>Conclusions</h2>
+
+    <p>This article represents an entry for the versioning task in the Mighty Storage Challenge 2018 as part of the ESWC 2018 Challenges Track.
+Our work consists of a versioned query engine with the OSTRICH versioned triple store and the Comunica <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engine platform.
+Preliminary results show fast query evaluation times for the queries that are supported.
+The list of unsupported queries is being used as a guideline for the further development of OSTRICH and Comunica.</p>
+
+    <p>During the usage of the SPBv benchmark,
+we identified several KPIs that are explicitly supported by OSTRICH,
+but were not being evaluated at the time of writing.
+We list them here as a suggestion to the benchmark authors for future work:</p>
+
+    <ul>
+      <li>Measuring storage size after each version ingestion.</li>
+      <li>Reporting of the ingestion time of each version separately, next of the current average.</li>
+      <li>Evaluation of querying <em>all</em> versions at the same time, and retrieving their applicable versions.</li>
+      <li>Evaluation of stream-based query results and offsets, for example using a diefficiency metric <span class="references">[<a href="#ref-13">13</a>]</span>.</li>
+    </ul>
+
+    <p>In future work, we intend to evaluate our system using different configurations of the SPBv benchmark,
+such as increasing the number of versions and increasing the change ratios.
+Furthermore, we intend to compare our system with other similar engines,
+both at triple index-level, and at <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span>-level.</p>
+
+  </section>
+
+</main>
+
+<footer><section id="references">
+<h2>References</h2>
+<dl class="references">
+  <dt id="ref-1">[1]</dt>
+  <dd resource="#semanticweb" typeof="schema:Article">Berners-Lee, T., Hendler, J., Lassila, O.: The Semantic Web. Scientific American. 284, 28–37 (2001).</dd>
+  <dt id="ref-2">[2]</dt>
+  <dd resource="#linkeddata" typeof="schema:Article">Bizer, C., Heath, T., Berners-Lee, T.: Linked Data - the story so far. Semantic Services, Interoperability and Web Applications: Emerging Concepts. 205–227 (2009).</dd>
+  <dt id="ref-3">[3]</dt>
+  <dd resource="#datasetdynamics" typeof="schema:Article">Umbrich, J., Decker, S., Hausenblas, M., Polleres, A., Hogan, A.: Towards dataset dynamics: Change frequency of Linked Open Data sources. 3rd International Workshop on Linked Data on the Web (LDOW). (2010).</dd>
+  <dt id="ref-4">[4]</dt>
+  <dd resource="http://ceur-ws.org/Vol-1377/paper6.pdf" typeof="schema:Article">Fernández, J.D., Polleres, A., Umbrich, J.: Towards efficient archiving of Dynamic Linked Open Data. In: Debattista, J., d’Aquin, M., and Lange, C. (eds.) Proceedings of te First DIACHRON Workshop on Managing the Evolution and Preservation of the Data Web. pp. 34–49 (2015).</dd>
+  <dt id="ref-5">[5]</dt>
+  <dd resource="#papakonstantinou2016versioning" typeof="schema:Article">Papakonstantinou, V., Flouris, G., Fundulaki, I., Stefanidis, K., Roussakis, G.: Versioning for Linked Data: Archiving Systems and Benchmarks. In: BLINK ISWC (2016).</dd>
+  <dt id="ref-6">[6]</dt>
+  <dd resource="https://rdfostrich.github.io/article-demo/" typeof="schema:Article">Taelman, R., Vander Sande, M., Verborgh, R.: OSTRICH: Versioned Random-Access Triple Store. In: Proceedings of the 27th International Conference Companion on World Wide Web (2018).</dd>
+  <dt id="ref-7">[7]</dt>
+  <dd resource="http://ceur-ws.org/Vol-1932/#paper-06" typeof="schema:Article">Papakonstantinou, V., Flouris, G., Fundulaki, I., Stefanidis, K., Roussakis, G.: SPBv: Benchmarking Linked Data Archiving Systems. In: Proceedings of the 2nd International Workshop on Benchmarking Linked Data and NLIWoD3: Natural Language Interfaces for the Web of Data (2017).</dd>
+  <dt id="ref-8">[8]</dt>
+  <dd resource="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/" typeof="schema:CreativeWork">Harris, S., Seaborne, A., Prud’hommeaux, E.: <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> 1.1 Query Language. W3C, <a href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/">http:/​/​www.w3.org/TR/2013/REC-sparql11-query-20130321/</a> (2013).</dd>
+  <dt id="ref-9">[9]</dt>
+  <dd resource="https://comunica.github.io/Article-ISWC2018-Resource/" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Comunica: a Modular <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> Query Engine for the Web. In: Proceedings of the 17th International Semantic Web Conference (2018).</dd>
+  <dt id="ref-10">[10]</dt>
+  <dd resource="http://www.websemanticsjournal.org/index.php/ps/article/view/328" typeof="schema:Article">Fernández, J.D., Martínez-Prieto, M.A., Gutiérrez, C., Polleres, A., Arias, M.: Binary <span class='abbreviation' title='Resource Description Framework'>RDF</span> Representation for Publication and Exchange (HDT). Web Semantics: Science, Services and Agents on the World Wide Web. 19, 22–41 (2013).</dd>
+  <dt id="ref-11">[11]</dt>
+  <dd resource="http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/" typeof="schema:CreativeWork">Feigenbaum, L., Todd Williams, G., Grant Clark, K., Torres, E.: <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> 1.1 Protocol. W3C, <a href="http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">http:/​/​www.w3.org/TR/2013/REC-sparql11-protocol-20130321/</a> (2013).</dd>
+  <dt id="ref-12">[12]</dt>
+  <dd resource="https://dx.doi.org/doi:10.1016/j.websem.2016.03.003" typeof="schema:Article">Verborgh, R., Vander Sande, M., Hartig, O., Van Herwegen, J., De Vocht, L., De Meester, B., Haesendonck, G., Colpaert, P.: Triple Pattern Fragments: a Low-cost Knowledge Graph Interface for the Web. Journal of Web Semantics. 37–38, (2016).</dd>
+  <dt id="ref-13">[13]</dt>
+  <dd resource="#diefficiency" typeof="schema:Article">Acosta, M., Vidal, M.-E., Sure-Vetter, Y.: Diefficiency metrics: Measuring the continuous efficiency of query processing approaches. In: International Semantic Web Conference. pp. 3–19. Springer (2017).</dd>
+</dl>
+</section>
+</footer>
+
+
+
+</body>
+</html>
