@@ -6,12 +6,8 @@
   <link rel="stylesheet" media="screen" href="styles/screen.css">
   <link rel="stylesheet" media="print"  href="styles/print.css">
   <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono" rel="stylesheet" />
-  <link href="https://dokie.li/media/css/do.css" media="all" rel="stylesheet" />
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" media="all" rel="stylesheet" />
-  <script src="https://dokie.li/scripts/simplerdf.js"></script>
-  <script src="https://dokie.li/scripts/medium-editor.min.js"></script>
-  <script src="https://dokie.li/scripts/medium-editor-tables.min.js"></script>
-  <script src="https://dokie.li/scripts/do.js"></script>
+  <link href="https://dokie.li/media/css/dokieli.css" media="all" rel="stylesheet" />
+  <script src="https://dokie.li/scripts/dokieli.js"></script>
 </head>
 
 <body prefix="cc: https://creativecommons.org/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# opmw: http://www.opmw.org/ontology/">
@@ -39,7 +35,7 @@ The 2018 edition of the Mighty Storage Challenge (MOCHA) is organized to discove
 <!-- Need         -->
 One task in this challenge focuses on the storage and querying of versioned datasets,
 <!-- Task         -->
-in which we participated by combining the OSTRICH triple store and the Comunica <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engine.
+in which we participated by combining the OSTRICH triple store and the Comunica <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> engine.
 <!-- Object       -->
 In this article, we briefly introduce our system for the versioning task of this challenge.
 <!-- Findings     -->
@@ -74,7 +70,7 @@ However, <a property="schema:citation http://purl.org/spar/cito/cites" href="htt
 Existing solutions either perform well for versioned query evaluation, or require less storage space, but not both.
 Furthermore, no existing solution performs well for all versioned query types, namely querying <em>at</em>, <em>between</em>, and <em>for</em> different versions.</p>
 
-    <p>In recent work, we introduced a <a property="schema:citation http://purl.org/spar/cito/cites" href="https://rdfostrich.github.io/article-demo/">compressed <span class='abbreviation' title='Resource Description Framework'>RDF</span> archive indexing technique</a> <span class="references">[<a href="#ref-6">6</a>]</span>—implemented under the name of <em>OSTRICH</em>—
+    <p>In recent work, we introduced a <a property="schema:citation http://purl.org/spar/cito/cites" href="https://rdfostrich.github.io/article-demo/">compressed <abbr title='Resource Description Framework'>RDF</abbr> archive indexing technique</a> <span class="references">[<a href="#ref-6">6</a>]</span>—implemented under the name of <em>OSTRICH</em>—
 that enables highly efficient triple pattern-based versioned querying capabilities.
 It offers a new trade-off compared to other approaches,
 as it calculates and stores additional information at ingestion time in order to reduce query evaluation time.
@@ -82,15 +78,15 @@ This additional information includes pointers to relevant positions to improve t
 Furthermore, it supports efficient result cardinality estimation, streaming results and offset support to enable efficient usage within query engines.</p>
 
     <p>The <a href="https://project-hobbit.eu/challenges/mighty-storage-challenge2018/" class="mandatory" data-link-text="https:/​/​project-​hobbit.eu/​challenges/​mighty-​storage-​challenge2018/​">Mighty Storage Challenge (MOCHA)</a>
-is a yearly challenge that aims to measure and detect bottlenecks in <span class='abbreviation' title='Resource Description Framework'>RDF</span> triple stores.
+is a yearly challenge that aims to measure and detect bottlenecks in <abbr title='Resource Description Framework'>RDF</abbr> triple stores.
 One of the tasks in this challenge concerns the storage and querying of versioned datasets.
-This task uses the <a property="schema:citation http://purl.org/spar/cito/cites" href="http://ceur-ws.org/Vol-1932/#paper-06">SPBv</a> <span class="references">[<a href="#ref-7">7</a>]</span> benchmark that consists of a dataset and <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> query workload generator for different versioned query types.
+This task uses the <a property="schema:citation http://purl.org/spar/cito/cites" href="http://ceur-ws.org/Vol-1932/#paper-06">SPBv</a> <span class="references">[<a href="#ref-7">7</a>]</span> benchmark that consists of a dataset and <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> query workload generator for different versioned query types.
 All MOCHA tasks are to be evaluated on the <a href="https://project-hobbit.eu/" class="mandatory" data-link-text="https:/​/​project-​hobbit.eu/​">HOBBIT benchmarking platform</a>.
-SPBv evaluates <a property="schema:citation http://purl.org/spar/cito/cites" href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/"><span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> queries</a> <span class="references">[<a href="#ref-8">8</a>]</span>, hence we combine OSTRICH, a versioned triple index with triple pattern interface, with
-<a property="schema:citation http://purl.org/spar/cito/cites" href="https://comunica.github.io/Article-ISWC2018-Resource/">Comunica</a> <span class="references">[<a href="#ref-9">9</a>]</span>, a modular <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engine platform.</p>
+SPBv evaluates <a property="schema:citation http://purl.org/spar/cito/cites" href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/"><abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> queries</a> <span class="references">[<a href="#ref-8">8</a>]</span>, hence we combine OSTRICH, a versioned triple index with triple pattern interface, with
+<a property="schema:citation http://purl.org/spar/cito/cites" href="https://comunica.github.io/Article-ISWC2018-Resource/">Comunica</a> <span class="references">[<a href="#ref-9">9</a>]</span>, a modular <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> engine platform.</p>
 
     <p>The remainder of this paper is structured as follows.
-First, the next section briefly introduces the OSTRICH store and the Comunica <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engine.
+First, the next section briefly introduces the OSTRICH store and the Comunica <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> engine.
 After that, we present our preliminary results in <a href="#evaluation">Section 3</a>.
 Finally, we conclude and discuss future work in <a href="#conclusions">Section 4</a>.</p>
 
@@ -104,12 +100,12 @@ We discuss these two parts separately in the following sections.</p>
 
     <h3 id="ostrich">OSTRICH</h3>
 
-    <p>OSTRICH is the implementation of a <a property="schema:citation http://purl.org/spar/cito/cites" href="https://rdfostrich.github.io/article-demo/">compressed <span class='abbreviation' title='Resource Description Framework'>RDF</span> archive indexing technique</a> <span class="references">[<a href="#ref-6">6</a>]</span> that offers efficient
+    <p>OSTRICH is the implementation of a <a property="schema:citation http://purl.org/spar/cito/cites" href="https://rdfostrich.github.io/article-demo/">compressed <abbr title='Resource Description Framework'>RDF</abbr> archive indexing technique</a> <span class="references">[<a href="#ref-6">6</a>]</span> that offers efficient
 triple pattern queries <em>in</em>, <em>between</em>, and <em>over</em> different versions.
 In order to achieve efficient querying for these different query types,
 OSTRICH uses a hybrid storage technique that is a combination of <em>individual copies</em>, <em>change-based</em> and <em>timestamp-based</em> storage.
 The initial dataset version is stored as a fully materialized and immutable snapshot.
-This snapshot is stored using <a property="schema:citation http://purl.org/spar/cito/cites" href="http://www.websemanticsjournal.org/index.php/ps/article/view/328">HDT</a> <span class="references">[<a href="#ref-10">10</a>]</span>, which is a highly compressed, binary <span class='abbreviation' title='Resource Description Framework'>RDF</span> representation.
+This snapshot is stored using <a property="schema:citation http://purl.org/spar/cito/cites" href="http://www.websemanticsjournal.org/index.php/ps/article/view/328">HDT</a> <span class="references">[<a href="#ref-10">10</a>]</span>, which is a highly compressed, binary <abbr title='Resource Description Framework'>RDF</abbr> representation.
 All other versions are deltas, i.e., lists of triples that need to be removed and lists of triples that need to be added.
 These deltas are relative to the initial version, but merged in a timestamp-based manner to reduce redundancies between each version.
 In order to offer optimization opportunities to query engines that use this store,
@@ -117,13 +113,13 @@ OSTRICH offers efficient cardinality estimation, streaming results and efficient
 
     <h3 id="comunica">Comunica</h3>
 
-    <p><a property="schema:citation http://purl.org/spar/cito/cites" href="https://comunica.github.io/Article-ISWC2018-Resource/">Comunica</a> <span class="references">[<a href="#ref-9">9</a>]</span> is a highly modular Web-based <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> query engine platform.
-Its modularity enables federated querying over heterogeneous interfaces, such as <a property="schema:citation http://purl.org/spar/cito/cites" href="http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/"><span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> endpoints</a> <span class="references">[<a href="#ref-11">11</a>]</span>,
-<span property="schema:citation http://purl.org/spar/cito/cites" resource="https://dx.doi.org/doi:10.1016/j.websem.2016.03.003"><a href="http://linkeddatafragments.org/publications/jws2016.pdf">Triple Pattern Fragments (<span class='abbreviation' title='Triple Pattern Fragments'>TPF</span>) entrypoints</a></span> <span class="references">[<a href="#ref-12">12</a>]</span> and plain <span class='abbreviation' title='Resource Description Framework'>RDF</span> files.
+    <p><a property="schema:citation http://purl.org/spar/cito/cites" href="https://comunica.github.io/Article-ISWC2018-Resource/">Comunica</a> <span class="references">[<a href="#ref-9">9</a>]</span> is a highly modular Web-based <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> query engine platform.
+Its modularity enables federated querying over heterogeneous interfaces, such as <a property="schema:citation http://purl.org/spar/cito/cites" href="http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/"><abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> endpoints</a> <span class="references">[<a href="#ref-11">11</a>]</span>,
+<span property="schema:citation http://purl.org/spar/cito/cites" resource="https://dx.doi.org/doi:10.1016/j.websem.2016.03.003"><a href="http://linkeddatafragments.org/publications/jws2016.pdf">Triple Pattern Fragments (<abbr title='Triple Pattern Fragments'>TPF</abbr>) entrypoints</a></span> <span class="references">[<a href="#ref-12">12</a>]</span> and plain <abbr title='Resource Description Framework'>RDF</abbr> files.
 New types of interfaces and datasources can be supported by implementing an additional software component
 and plugging it into a publish-subscribe-based system through an external semantic configuration file.</p>
 
-    <p>In order to support <em>versioned</em> <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> querying over an OSTRICH backend,
+    <p>In order to support <em>versioned</em> <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> querying over an OSTRICH backend,
 we <a href="https://github.com/rdfostrich/comunica-actor-rdf-resolve-quad-pattern-ostrich" class="mandatory" data-link-text="https:/​/​github.com/​rdfostrich/​comunica-​actor-​rdf-​resolve-​quad-​pattern-​ostrich">implemented</a>
 a module for resolving triple patterns with a versioning context against an OSTRICH dataset.
 Furthermore, as versions within the SPBv benchmark are represented as <em>named graphs</em>,
@@ -131,7 +127,7 @@ we rewrite these queries in a <a href="https://github.com/rdfostrich/comunica-ac
 to OSTRICH-compatible queries <em>in</em>, <em>between</em>, or <em>over</em> different versions as a pre-processing step.
 Finally, we provide a <a href="https://github.com/rdfostrich/comunica-actor-init-sparql-ostrich" class="mandatory" data-link-text="https:/​/​github.com/​rdfostrich/​comunica-​actor-​init-​sparql-​ostrich">default Comunica configuration and script</a>
 to use these modules
-together with the existing Comunica modules as a <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engine.
+together with the existing Comunica modules as a <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> engine.
 These three modules will be explained in more detail hereafter.</p>
 
     <h4 id="ostrich-module">OSTRICH Module</h4>
@@ -202,12 +198,12 @@ and the ending version is the <em>largest</em>, assuming lexicographical sorting
 If the graph URI from the first pattern is <em>larger</em> than the second graph URI, then the DM queries only additions.
 In the other case, only deletions will be queried.</p>
 
-    <h4 id="sparql-engine"><span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> Engine</h4>
+    <h4 id="sparql-engine"><abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> Engine</h4>
 
-    <p>The Comunica platform allows <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engines to be created based on a semantic configuration file.
-By default, Comunica has a large collection of modules to create a default <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engine.
+    <p>The Comunica platform allows <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> engines to be created based on a semantic configuration file.
+By default, Comunica has a large collection of modules to create a default <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> engine.
 For this work, we adapted the default configuration file where we added our OSTRICH and rewriter modules.
-This allows complete versioned <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> querying, instead of only versioned triple pattern querying, as supported by OSTRICH.
+This allows complete versioned <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> querying, instead of only versioned triple pattern querying, as supported by OSTRICH.
 This engine is available on the <a href="https://www.npmjs.com/package/@comunica/actor-init-sparql-ostrich" class="mandatory" data-link-text="https:/​/​www.npmjs.com/​package/​@comunica/​actor-​init-​sparql-​ostrich">npm package manager</a> for direct usage.</p>
 
   </section>
@@ -272,7 +268,7 @@ For each following changeset, OSTRICH requires more processing time as it calcul
 and converts the changeset to one that is relative to the initial version instead of the preceding version.</p>
 
     <p>For the 99 queries that were evaluated, our system failed for 27 of them according to the benchmark.
-The majority of failures is caused by incomplete <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> expression support in Comunica, which is not on par with <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> 1.1 at the time of writing.
+The majority of failures is caused by incomplete <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> expression support in Comunica, which is not on par with <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> 1.1 at the time of writing.
 The other failures (in task 5.1) are caused by an error in the benchmark where changes in literal datatypes are not being detected.
 We are in contact with the benchmark developer to resolve this.</p>
 
@@ -448,7 +444,7 @@ Additional details on the query types can be found in the <a property="schema:ci
     <h2 id="conclusions">Conclusions</h2>
 
     <p>This article represents an entry for the versioning task in the Mighty Storage Challenge 2018 as part of the ESWC 2018 Challenges Track.
-Our work consists of a versioned query engine with the OSTRICH versioned triple store and the Comunica <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> engine platform.
+Our work consists of a versioned query engine with the OSTRICH versioned triple store and the Comunica <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> engine platform.
 Preliminary results show fast query evaluation times for the queries that are supported.
 The list of unsupported queries is being used as a guideline for the further development of OSTRICH and Comunica.</p>
 
@@ -467,7 +463,7 @@ We list them here as a suggestion to the benchmark authors for future work:</p>
     <p>In future work, we intend to evaluate our system using different configurations of the SPBv benchmark,
 such as increasing the number of versions and increasing the change ratios.
 Furthermore, we intend to compare our system with other similar engines,
-both at triple index-level, and at <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span>-level.</p>
+both at triple index-level, and at <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr>-level.</p>
 
   </section>
 
@@ -491,13 +487,13 @@ both at triple index-level, and at <span class='abbreviation' title='SPARQL Proc
   <dt id="ref-7">[7]</dt>
   <dd resource="http://ceur-ws.org/Vol-1932/#paper-06" typeof="schema:Article">Papakonstantinou, V., Flouris, G., Fundulaki, I., Stefanidis, K., Roussakis, G.: SPBv: Benchmarking Linked Data Archiving Systems. In: Proceedings of the 2nd International Workshop on Benchmarking Linked Data and NLIWoD3: Natural Language Interfaces for the Web of Data (2017).</dd>
   <dt id="ref-8">[8]</dt>
-  <dd resource="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/" typeof="schema:CreativeWork">Harris, S., Seaborne, A., Prud’hommeaux, E.: <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> 1.1 Query Language. W3C, <a href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/">http:/​/​www.w3.org/TR/2013/REC-sparql11-query-20130321/</a> (2013).</dd>
+  <dd resource="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/" typeof="schema:CreativeWork">Harris, S., Seaborne, A., Prud’hommeaux, E.: <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> 1.1 Query Language. W3C, <a href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/">http:/​/​www.w3.org/TR/2013/REC-sparql11-query-20130321/</a> (2013).</dd>
   <dt id="ref-9">[9]</dt>
-  <dd resource="https://comunica.github.io/Article-ISWC2018-Resource/" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Comunica: a Modular <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> Query Engine for the Web. In: Proceedings of the 17th International Semantic Web Conference (2018).</dd>
+  <dd resource="https://comunica.github.io/Article-ISWC2018-Resource/" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Comunica: a Modular <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> Query Engine for the Web. In: Proceedings of the 17th International Semantic Web Conference (2018).</dd>
   <dt id="ref-10">[10]</dt>
-  <dd resource="http://www.websemanticsjournal.org/index.php/ps/article/view/328" typeof="schema:Article">Fernández, J.D., Martínez-Prieto, M.A., Gutiérrez, C., Polleres, A., Arias, M.: Binary <span class='abbreviation' title='Resource Description Framework'>RDF</span> Representation for Publication and Exchange (HDT). Web Semantics: Science, Services and Agents on the World Wide Web. 19, 22–41 (2013).</dd>
+  <dd resource="http://www.websemanticsjournal.org/index.php/ps/article/view/328" typeof="schema:Article">Fernández, J.D., Martínez-Prieto, M.A., Gutiérrez, C., Polleres, A., Arias, M.: Binary <abbr title='Resource Description Framework'>RDF</abbr> Representation for Publication and Exchange (HDT). Web Semantics: Science, Services and Agents on the World Wide Web. 19, 22–41 (2013).</dd>
   <dt id="ref-11">[11]</dt>
-  <dd resource="http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/" typeof="schema:CreativeWork">Feigenbaum, L., Todd Williams, G., Grant Clark, K., Torres, E.: <span class='abbreviation' title='SPARQL Procotol and RDF Query Language'>SPARQL</span> 1.1 Protocol. W3C, <a href="http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">http:/​/​www.w3.org/TR/2013/REC-sparql11-protocol-20130321/</a> (2013).</dd>
+  <dd resource="http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/" typeof="schema:CreativeWork">Feigenbaum, L., Todd Williams, G., Grant Clark, K., Torres, E.: <abbr title='SPARQL Procotol and RDF Query Language'>SPARQL</abbr> 1.1 Protocol. W3C, <a href="http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">http:/​/​www.w3.org/TR/2013/REC-sparql11-protocol-20130321/</a> (2013).</dd>
   <dt id="ref-12">[12]</dt>
   <dd resource="https://dx.doi.org/doi:10.1016/j.websem.2016.03.003" typeof="schema:Article">Verborgh, R., Vander Sande, M., Hartig, O., Van Herwegen, J., De Vocht, L., De Meester, B., Haesendonck, G., Colpaert, P.: Triple Pattern Fragments: a Low-cost Knowledge Graph Interface for the Web. Journal of Web Semantics. 37–38, (2016).</dd>
   <dt id="ref-13">[13]</dt>
